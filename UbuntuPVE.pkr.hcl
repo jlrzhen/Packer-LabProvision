@@ -59,6 +59,8 @@ build {
 
   provisioner "shell" {
     # This runs with all sources.
-    inline = ["echo 'rubber ducky'> ducky.txt"]
+    inline = [
+      "echo 'rubber ducky'> ducky.txt",
+      "sudo apt remove unattended-upgrades"]
   }
 }
