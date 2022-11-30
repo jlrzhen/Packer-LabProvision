@@ -61,6 +61,6 @@ build {
     # This runs with all sources.
     inline = [
       "echo 'rubber ducky'> ducky.txt",
-      "sudo apt remove unattended-upgrades"]
+      "sudo apt-get remove unattended-upgrades -y"]
   }
 }
