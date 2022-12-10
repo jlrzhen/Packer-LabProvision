@@ -25,6 +25,7 @@ source "proxmox" "Ubuntu" {
   boot_wait    = "10s"
   cores        = "2"
   cpu_type     = "host"
+  machine = "q35"
   disks {
     disk_size         = "24G"
     storage_pool      = "local-lvm"
