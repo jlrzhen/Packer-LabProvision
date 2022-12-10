@@ -1,6 +1,6 @@
 export $(cat .env | xargs)
 packer init .
-packer validate .
+packer validate . && \
 while true; do
     read -p "Continue Packer build? [y/n] " yn
     case $yn in

@@ -16,7 +16,7 @@
 # build blocks. A build block runs provisioner and post-processors on a
 # source. Read the documentation for source blocks here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/source
-source "proxmox" "ubuntu" {
+source "proxmox" "Ubuntu" {
   boot_command = [
     "<esc>c", 
     "linux /casper/vmlinuz --- autoinstall ds='nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/' ", 
@@ -41,8 +41,8 @@ source "proxmox" "ubuntu" {
   node                 = "${var.node}"
   proxmox_url          = "${var.proxmox_url}"
   qemu_agent           = true
-  ssh_password         = "ubuntu"
-  ssh_timeout          = "30m"
+  ssh_password         = "${var.ubuntu_password}"
+  ssh_timeout          = "60m"
   ssh_username         = "ubuntu"
   template_description = "Ubuntu 22.04, generated on ${legacy_isotime("2006-01-02T15:04:05Z")}"
   template_name        = "ubuntu22.04"
@@ -55,12 +55,18 @@ source "proxmox" "ubuntu" {
 # documentation for build blocks can be found here:
 # https://www.packer.io/docs/templates/hcl_templates/blocks/build
 build {
-  sources = ["source.proxmox.ubuntu"]
+  sources = ["source.proxmox.Ubuntu"]
 
   provisioner "shell" {
     # This runs with all sources.
+    environment_vars = [
+      "DEBIAN_FRONTEND=noninteractive"
+    ]
+    execute_command = "(echo '${var.ubuntu_password}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}') >/dev/null 2>&1 || true"
     inline = [
       "echo 'rubber ducky'> ducky.txt",
-      "sudo apt-get remove unattended-upgrades -y"]
+      "apt-get install apt-transport-https -y",
+      "apt-get remove unattended-upgrades -y"
+    ]
   }
 }

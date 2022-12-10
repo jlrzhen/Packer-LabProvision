@@ -14,3 +14,8 @@ variable "pve_token" {
 variable "pve_username" {
     type = string
 }
+
+variable "ubuntu_password" {
+    type = string
+    sensitive = true
+}
